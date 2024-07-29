@@ -9,6 +9,7 @@ This application is a simple Employee CRUD (Create, Read, Update, Delete) servic
 - Update employee details by ID
 - Delete employee by ID
 - Get a list of employees based on specific criteria
+- Get a Paginated List of Employees based on specific criteria
 
 ## Technologies Used
 
@@ -141,15 +142,37 @@ This application is a simple Employee CRUD (Create, Read, Update, Delete) servic
     ```json
     [
         {
-            "id": 1,
-            "first_name": "John",
-            "last_name": "Doe",
-            "department": "Engineering",
-            "position": "Developer",
-            "grade": "A",
-            "salary": 60000
+            
         }
     ]
+    ```
+
+### Get Paginated List of Employees
+
+- **URL**: `/pages`
+- **Method**: `POST`
+- **Request Body**: `EmployeeFilterDTO`
+
+    ```json
+    {
+        "id": 123,
+        "first_name": "John",
+        "last_name": "Doe",
+        "department": "Engineering",
+        "position": "Developer",
+        "grade": "A",
+        "salary": 60000
+    }
+    ```
+
+- **Response Body**: `PageDTO<EmployeeSpecialDTO>`
+
+    ```json
+    {
+        "pageNumber": 0,
+        "pageSize": 10,
+        your another filter ex. id, name and etc.
+    }
     ```
 
 ## Exception Handling

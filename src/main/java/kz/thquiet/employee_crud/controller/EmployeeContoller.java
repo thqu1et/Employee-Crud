@@ -1,9 +1,7 @@
 package kz.thquiet.employee_crud.controller;
 
-import kz.thquiet.employee_crud.dto.EmployeeDTO;
-import kz.thquiet.employee_crud.dto.EmployeeListDTO;
-import kz.thquiet.employee_crud.dto.EmployeeSpecialDTO;
-import kz.thquiet.employee_crud.dto.EmployeeToCreateDTO;
+import kz.thquiet.employee_crud.dto.*;
+import kz.thquiet.employee_crud.dto.common.PageDTO;
 import kz.thquiet.employee_crud.repository.EmployeeRepository;
 import kz.thquiet.employee_crud.service.EmployeeService;
 import kz.thquiet.employee_crud.util.Constant;
@@ -90,5 +88,11 @@ public class EmployeeContoller {
     @PostMapping("/list")
     public ResponseEntity<List<EmployeeSpecialDTO>> getList(@RequestBody EmployeeListDTO dto) {
         return ResponseEntity.ok(service.getList(dto));
+    }
+
+    @SneakyThrows
+    @PostMapping("/pages")
+    public ResponseEntity<PageDTO<EmployeeSpecialDTO>> getPage(@RequestBody EmployeeFilterDTO filter) {
+        return ResponseEntity.ok(service.getPages(filter));
     }
 }

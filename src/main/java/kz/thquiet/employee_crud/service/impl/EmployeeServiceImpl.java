@@ -1,16 +1,16 @@
 package kz.thquiet.employee_crud.service.impl;
 
-import kz.thquiet.employee_crud.dto.EmployeeDTO;
-import kz.thquiet.employee_crud.dto.EmployeeListDTO;
-import kz.thquiet.employee_crud.dto.EmployeeSpecialDTO;
-import kz.thquiet.employee_crud.dto.EmployeeToCreateDTO;
+import kz.thquiet.employee_crud.dto.*;
+import kz.thquiet.employee_crud.dto.common.PageDTO;
 import kz.thquiet.employee_crud.entity.EmployeeEntity;
 import kz.thquiet.employee_crud.exception.EmptyValueException;
 import kz.thquiet.employee_crud.exception.NotFoundException;
 import kz.thquiet.employee_crud.repository.EmployeeRepository;
 import kz.thquiet.employee_crud.repository.specification.EmployeeSpecification;
 import kz.thquiet.employee_crud.service.EmployeeService;
+import kz.thquiet.employee_crud.util.PageableUtils;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
@@ -121,6 +121,26 @@ public class EmployeeServiceImpl implements EmployeeService {
                 .stream().sorted(Comparator.comparing(EmployeeEntity::getId))
                 .map(this::convertToDtoWithId)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public PageDTO<EmployeeSpecialDTO> getPages(EmployeeFilterDTO dto) {
+        EmployeeEntity e = new EmployeeEntity();
+        e.setId(dto.getId());
+        e.setSalary(dto.getSalary());
+        e.setFirst_name(dto.getFirst_name());
+        e.setLast_name(dto.getLast_name());
+        e.setDepartment(dto.getDepartment());
+        e.setGrade(dto.getGrade());
+        e.setPosition(dto.getPosition());
+
+        Specification<EmployeeEntity> specification = EmployeeSpecification.filterEmployee(e);
+        Page<EmployeeSpecialDTO> page = repository.findAll(specification,
+                PageableUtils.createPageRequest(dto))
+                .map(this::convertToDtoWithId);
+        List<EmployeeSpecialDTO> list = page.toList();
+
+        return new PageDTO<>(page, list);
     }
 
     private EmployeeDTO convert(EmployeeEntity entity) {
