@@ -107,17 +107,8 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public List<EmployeeSpecialDTO> getList(EmployeeListDTO dto) {
-        EmployeeEntity e = new EmployeeEntity();
-        e.setId(dto.getId());
-        e.setSalary(dto.getSalary());
-        e.setFirst_name(dto.getFirst_name());
-        e.setLast_name(dto.getLast_name());
-        e.setDepartment(dto.getDepartment());
-        e.setGrade(dto.getGrade());
-        e.setPosition(dto.getPosition());
-        Specification<EmployeeEntity> specification = EmployeeSpecification.filterEmployee(e);
-        return repository.findAll(specification)
+    public List<EmployeeSpecialDTO> getList() {
+        return repository.findAll()
                 .stream().sorted(Comparator.comparing(EmployeeEntity::getId))
                 .map(this::convertToDtoWithId)
                 .collect(Collectors.toList());
@@ -139,7 +130,6 @@ public class EmployeeServiceImpl implements EmployeeService {
                 PageableUtils.createPageRequest(dto))
                 .map(this::convertToDtoWithId);
         List<EmployeeSpecialDTO> list = page.toList();
-
         return new PageDTO<>(page, list);
     }
 

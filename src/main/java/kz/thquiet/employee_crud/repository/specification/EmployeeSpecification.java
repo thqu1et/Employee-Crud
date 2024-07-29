@@ -6,34 +6,39 @@ import org.springframework.data.jpa.domain.Specification;
 
 import java.util.ArrayList;
 import java.util.List;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Root;
+
 
 import static java.util.Objects.nonNull;
 
 public class EmployeeSpecification {
-    public static Specification<EmployeeEntity> filterEmployee(EmployeeEntity employee) {
-        return (root, query, criteriaBuilder) -> {
+    public static Specification<EmployeeEntity> filterEmployee(EmployeeEntity sample) {
+        return (Root<EmployeeEntity> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) -> {
             List<Predicate> predicates = new ArrayList<>();
 
-            if (nonNull(employee.getId())) {
-                predicates.add(criteriaBuilder.equal(root.get("id"), employee.getId()));
+            if (sample.getId() != null) {
+                predicates.add(criteriaBuilder.equal(root.get("id"), sample.getId()));
             }
-            if (nonNull(employee.getFirst_name())) {
-                predicates.add(criteriaBuilder.like(root.get("first_name"), "%" + employee.getFirst_name() + "%"));
+            if (sample.getFirst_name() != null && !sample.getFirst_name().isEmpty()) {
+                predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get("first_name")), "%" + sample.getFirst_name().toLowerCase() + "%"));
             }
-            if (nonNull(employee.getLast_name())) {
-                predicates.add(criteriaBuilder.like(root.get("last_name"), "%" + employee.getLast_name() + "%"));
+            if (sample.getLast_name() != null && !sample.getLast_name().isEmpty()) {
+                predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get("last_name")), "%" + sample.getLast_name().toLowerCase() + "%"));
             }
-            if (nonNull(employee.getDepartment())) {
-                predicates.add(criteriaBuilder.equal(root.get("department"), employee.getDepartment()));
+            if (sample.getDepartment() != null && !sample.getDepartment().isEmpty()) {
+                predicates.add(criteriaBuilder.equal(root.get("department"), sample.getDepartment()));
             }
-            if (nonNull(employee.getPosition())) {
-                predicates.add(criteriaBuilder.equal(root.get("position"), employee.getPosition()));
+            if (sample.getPosition() != null && !sample.getPosition().isEmpty()) {
+                predicates.add(criteriaBuilder.equal(root.get("position"), sample.getPosition()));
             }
-            if (nonNull(employee.getGrade())) {
-                predicates.add(criteriaBuilder.equal(root.get("grade"), employee.getGrade()));
+            if (sample.getGrade() != null && !sample.getGrade().isEmpty()) {
+                predicates.add(criteriaBuilder.equal(root.get("grade"), sample.getGrade()));
             }
-            if (nonNull(employee.getSalary())) {
-                predicates.add(criteriaBuilder.equal(root.get("salary"), employee.getSalary()));
+            if (sample.getSalary() != -1) {
+                predicates.add(criteriaBuilder.equal(root.get("salary"), sample.getSalary()));
             }
             return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
         };

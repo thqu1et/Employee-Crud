@@ -85,9 +85,9 @@ public class EmployeeContoller {
 //            @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера")
 //    })
     @SneakyThrows
-    @PostMapping("/list")
-    public ResponseEntity<List<EmployeeSpecialDTO>> getList(@RequestBody EmployeeListDTO dto) {
-        return ResponseEntity.ok(service.getList(dto));
+    @GetMapping("/list")
+    public ResponseEntity<List<EmployeeSpecialDTO>> getList() {
+        return ResponseEntity.ok(service.getList());
     }
 
     @SneakyThrows

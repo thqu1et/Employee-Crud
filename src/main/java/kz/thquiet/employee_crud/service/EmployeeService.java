@@ -10,6 +10,6 @@ public interface EmployeeService {
     public EmployeeDTO get(Integer id);
     public EmployeeDTO updateById(Integer id,  EmployeeToCreateDTO dto);
     public void deleteById(Integer id);
-    public List<EmployeeSpecialDTO> getList(EmployeeListDTO dto);
+    public List<EmployeeSpecialDTO> getList();
     PageDTO<EmployeeSpecialDTO> getPages(EmployeeFilterDTO dto);
 }
